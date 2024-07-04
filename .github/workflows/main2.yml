@@ -1,0 +1,30 @@
+# １．ワークフローの名前
+name: Front-End CI Actions
+# ２．このワークフローがフックされるGitアクション
+on: [push,pull_request]
+jobs:
+  # ３．ジョブの名前
+  lint-and-test:
+    # ４．動作させるOS
+    runs-on: ubuntu-latest
+    # ５．複数のNode.jsバージョンのマトリクスで実施
+    strategy:
+      matrix: 
+        node-version: [12.x]
+    # ６．ジョブ実行のステップシーケンス
+    steps:
+    # ７．GitHub Actionが提供するアクション
+    - uses: actions/checkout@v1
+    - name: Use Node.js ${{ matrix.node-version }}
+    - uses: actions/setup-node@v1
+      with:
+        # ８．マトリックスの変数を使用する
+        node-version: ${{ matrix.node-version }}
+    # ９．コミュニティが提供するアクション
+    - uses: c-hive/gha-yarn-chache@v1
+    - name: Package Install
+      run: yarn
+    - name: TypeScript Compile
+      run: yarn lint:ts
+    - name: Jest UnitTest
+      run: yarn test
