@@ -14,17 +14,17 @@ jobs:
     # ６．ジョブ実行のステップシーケンス
     steps:
     # ７．GitHub Actionが提供するアクション
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-    - uses: actions/setup-node@v1
-      with:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+      - uses: actions/setup-node@v1
+        with:
         # ８．マトリックスの変数を使用する
-        node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node-version }}
     # ９．コミュニティが提供するアクション
-    - uses: c-hive/gha-yarn-chache@v1
-    - name: Package Install
-      run: yarn
-    - name: TypeScript Compile
-      run: yarn lint:ts
-    - name: Jest UnitTest
-      run: yarn test
+      - uses: c-hive/gha-yarn-chache@v1
+      - name: Package Install
+        run: yarn
+      - name: TypeScript Compile
+        run: yarn lint:ts
+      - name: Jest UnitTest
+        run: yarn test
