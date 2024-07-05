@@ -1,7 +1,8 @@
 # １．ワークフローの名前
 name: Front-End CI Actions
 # ２．このワークフローがフックされるGitアクション
-on: [push,pull_request]
+on: [push, pull_request]
+
 jobs:
   # ３．ジョブの名前
   lint-and-test:
@@ -9,26 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     # ５．複数のNode.jsバージョンのマトリクスで実施
     strategy:
-      matrix: 
+      matrix:
         node-version: [12.x]
     # ６．ジョブ実行のステップシーケンス
     steps:
-    # ７．GitHub Actionが提供するアクション
-      - uses: actions/checkout@v1
+      # ７．GitHub Actionが提供するアクション
+      - name: Checkout code
+        uses: actions/checkout@v3
       
       - name: Use Node.js ${{ matrix.node-version }}
-      
-      - uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
-        # ８．マトリックスの変数を使用する
+          # ８．マトリックスの変数を使用する
           node-version: ${{ matrix.node-version }}
-          
-    # ９．コミュニティが提供するアクション
-      - uses: c-hive/gha-yarn-chache@v1
+
+      # ９．コミュニティが提供するアクション
+      - name: Cache Yarn dependencies
+        uses: c-hive/gha-yarn-cache@v1
       
       - name: Package Install
         run: yarn
-        
+      
       - name: TypeScript Compile
         run: yarn lint:ts
       
